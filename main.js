@@ -32,6 +32,22 @@ class Blockchain {
         newBlock.hash = newBlock.calculateHash();
         this.chain.push(newBlock);
     }
+
+    isChainValid() {
+        for(let i = 1; i < this.chain.length; i++) {
+            const currentBlock = this.chain[i];
+            const previousBlock = this.chain[i-1];
+
+            if(currentBlock.hash !== currentBlock.calculateHash()) {
+                return false;
+            }
+
+            if(currentBlock.previousHash !== previousBlock.hash) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 // testing
@@ -40,4 +56,8 @@ let JayCoin = new Blockchain();
 JayCoin.addBlock(new Block(1, "12/03/2018", { amount: 4}));
 JayCoin.addBlock(new Block(1, "14/03/2018", { amount: 12}));
 
-console.log(JSON.stringify(JayCoin, null, 4));
+console.log('Is blockchain valid? ' + JayCoin.isChainValid());
+
+
+
+// console.log(JSON.stringify(JayCoin, null, 4));
